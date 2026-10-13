@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>K-Bond V3 · 채권 검색</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+<main class="shell">
+  <header><div class="brand"><span class="mark">K</span><div><h1>K-Bond <span class="version">V3</span></h1><p>채권 수집과 조회를 한곳에서</p></div></div><div class="server" id="serverStatus" role="status">서버 확인 중</div></header>
+  <section class="rooms" id="rooms" aria-label="채팅방 연결 상태"></section>
+  <section class="assistant panel">
+    <div class="eyebrow">BOND SEARCH</div><h2>필요한 채권, 말하듯 찾아보세요.</h2>
+    <p class="hint">누적 수집 내역에서 조건에 맞는 정보를 찾습니다. 검색 결과는 조회 시점으로 고정됩니다.</p>
+    <form id="searchForm">
+      <label class="sr-only" for="query">채권 검색어</label>
+      <div class="prompt"><span aria-hidden="true">⌕</span><input id="query" autocomplete="off" maxlength="300" placeholder="하나은행 채권 보여줘"><button type="submit" id="searchButton">조회 <span aria-hidden="true">↗</span></button></div>
+      <div class="chips"><button type="button" data-query="하나은행">하나은행</button><button type="button" data-query="하나은행 매수">하나은행 매수</button><button type="button" data-query="오늘 막무가내 매도">오늘 막무가내 매도</button><button type="button" data-query="">전체 내역</button></div>
+      <details><summary>상세 조건</summary><div class="filters">
+        <label>검색 범위<select id="scope"><option value="bond">종목·대화 내용</option><option value="sender">송신자</option><option value="all">전체 항목</option></select></label>
+        <label>채팅방<select id="room"><option value="">모든 방</option><option>[채권] 블커본드</option><option>[채권] 막무가내</option></select></label>
+        <label>구분<select id="side"><option value="">모든 구분</option><option>매수</option><option>매도</option><option>거래</option><option>중단</option></select></label>
+        <label>수집 시작일<input type="date" id="from"></label><label>수집 종료일<input type="date" id="to"></label>
+        <button class="subtle" type="button" id="resetFilters">조건 초기화</button>
+      </div></details>
+    </form>
+    <div class="answer" role="status" aria-live="polite"><span class="avatar">K</span><div><strong id="answer">내역을 불러오고 있습니다.</strong><p id="applied">입력된 단어와 간단한 조건을 해석하는 로컬 검색입니다.</p></div></div>
+  </section>
+  <section class="summary" aria-label="검색 요약"><div><span>누적 수집</span><strong id="total">—</strong></div><div><span>조건에 맞는 내역</span><strong id="matches">—</strong></div><div><span>조회 시점</span><strong id="asOf">—</strong></div><div><span>검색 소요</span><strong id="elapsed">—</strong></div></section>
+  <section class="panel results">
+    <div class="result-head"><div><h2>채권 내역</h2><p id="pageNote">최신 저장 순 · 페이지당 최대 100건</p></div><button class="subtle" id="refresh">다시 조회</button></div>
+    <div id="error" class="error" role="alert" hidden></div>
+    <div class="table-wrap"><table><thead><tr><th>수집 시간</th><th>채팅방</th><th>종목</th><th>만기</th><th>구분</th><th>송신자</th><th>대화 내용</th><th><span class="sr-only">복사</span></th></tr></thead><tbody id="rows"></tbody></table><div class="empty" id="empty" hidden><strong>조건에 맞는 내역이 없습니다.</strong><p>기관명이나 종목을 바꾸거나 상세 조건을 확인해 보세요.</p></div></div>
+    <footer class="pager"><span id="pageCount">—</span><div><button class="subtle" id="prev" disabled>← 이전</button><button class="subtle" id="next" disabled>다음 →</button></div></footer>
+  </section>
+  <footer class="footnote"><span>내 PC에 저장 · 외부 AI 전송 없음</span><span id="engineNote">연결된 방만 수집합니다.</span></footer>
+</main>
+</body>
+</html>
